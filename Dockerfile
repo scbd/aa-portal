@@ -16,6 +16,6 @@ ENV NUXT_HOST=0.0.0.0
 ENV PORT 3000
 EXPOSE 3000
 
-RUN yarn build
+RUN yarn generate
 
 ENTRYPOINT ["/usr/src/app/docker-entry.sh"]

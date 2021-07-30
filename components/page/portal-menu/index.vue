@@ -3,7 +3,6 @@
     <div class="content">
       <div class="portal-nav-style">
         <div class="portal-nav-style-inner">
-          
           <div class="wrapper" v-for="(aMenu,index) in siteNavigationElement.hasPart" :key="index" >
             <a :href="aMenu.url" class="link"> {{aMenu.name}}</a>
           </div>

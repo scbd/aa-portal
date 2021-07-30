@@ -3,7 +3,7 @@
     <div class="container ">
       <div  class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
-         
+
           <!-- <a href="https://www.cbd.int/action-agenda/newsletter.shtml">
             <img class="img-fluid" src="https://attachments.cbd.int/s1.png"/>
           </a> -->
@@ -17,7 +17,7 @@
         </div>
         <div class="col-lg-5 p-lg-0 z-10">
           <a href="https://www.cbd.int/article/uebt-announcement-action-agenda-2021">
-            <img class="img-fluid" src="https://attachments.cbd.int/rs1.jpeg"/>
+            <img class="img-fluid"  src="~/assets/rs1-small.png"/>
           </a>
         </div>
       </div>
@@ -68,10 +68,10 @@ export default {
   mounted(){
     setTimeout(() => this.loaded = true, 3000)
   },
-  data
+  asyncData
 }
 
-function data(){
+function asyncData(ctx){
   return {
     pledges     : 0,
     partnerships: 0,

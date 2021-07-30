@@ -2,6 +2,7 @@ import { i18n } from './configs'
 
 const { NODE_ENV, ADMIN_ROLE  } = process.env
 
+const isDev = [ 'dev', 'development' ].includes( NODE_ENV )
 
 export default {
   ssr: false,
@@ -9,12 +10,12 @@ export default {
   rootDir   : __dirname,
   modern    : true,
   publicRuntimeConfig: {
-    baseURL          : process.env.BASE_URL             || 'https://www.cbd.int'                                       ,
+    baseURL          : process.env.BASE_URL             || 'https://www.cbd.int',
     drupalApi        : process.env.DAPI                 || 'https://h550gxekak.execute-api.us-east-1.amazonaws.com/stg',
-    basePath         : process.env.BASE_PATH            || '/action-agenda'                                            ,
-    drupalMenuName   : process.env.DRUPAL_MENU_NAME     || 'action-agenda'                                             ,
-    drupalSubMenuName: process.env.DRUPAL_SUB_MENU_NAME || 'action-agenda'                                             ,
-    adminRole        : process.env.ADMIN_ROLE           || 'ActionAdmin'                                               ,
+    basePath         : process.env.BASE_PATH            || '/portals/action-agenda',
+    drupalMenuName   : process.env.DRUPAL_MENU_NAME     || 'action-agenda',
+    drupalSubMenuName: process.env.DRUPAL_SUB_MENU_NAME || 'action',
+    adminRole        : process.env.ADMIN_ROLE           || 'ActionAdmin',
     nodeEnv          : process.env.NODE_ENV             || 'production'
   },
   head      : {
@@ -38,6 +39,7 @@ export default {
   ],
 
   build: {                                                      // Build Configuration: https://go.nuxtjs.dev/config-build
+    publicPath: isDev? '/_nuxt/' : 'https://www.cbd.int/portals/action-agenda/_nuxt/',
     babel: {
       plugins: [
         '@babel/plugin-proposal-export-default-from',
@@ -46,7 +48,6 @@ export default {
     },
   },
   router: {
-    base      :'/action-agenda',
     trailingSlash : true
   },
 
