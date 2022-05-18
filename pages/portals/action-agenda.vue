@@ -15,9 +15,11 @@
         <div class="col-lg-2 p-lg-0  px-lg-3 z-10">
           <Counts :pledges="pledges" :partnerships="partnerships"/>
         </div>
-        <div class="col-lg-5 p-lg-0 z-10">
-          <a href="https://www.cbd.int/article/uebt-announcement-action-agenda-2021">
-            <img class="img-fluid"  src="~/assets/rs1-small.png"/>
+        <div class="col-lg-5 p-lg-0 z-10 img-size">
+          <!-- <a href="https://www.cbd.int/article/uebt-announcement-action-agenda-2021"> -->
+            <!-- <img class="img-fluid"  src="~/assets/rs1-small.png"/> -->
+          <a href="https://www.cbd.int/article/New-CitiesWithNature-AtionPlatform-with-CBD-Action-Agenda"> 
+            <img class="img-fluid" src="~/assets/CitiesWithNature-1.png"/>
           </a>
         </div>
       </div>
@@ -101,6 +103,12 @@ async function getNumberOfPartnerships(){
 .z-10{
   z-index: 10;
 }
+
+img {
+  width: 100%;
+  height: 240px;
+}
+
 .particles-cont {
   position: absolute;
   top: 0;
