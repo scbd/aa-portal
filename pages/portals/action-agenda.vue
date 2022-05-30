@@ -3,7 +3,6 @@
     <div class="container ">
       <div  class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
-
           <!-- <a href="https://www.cbd.int/action-agenda/newsletter.shtml">
             <img class="img-fluid" src="https://attachments.cbd.int/s1.png"/>
           </a> -->
