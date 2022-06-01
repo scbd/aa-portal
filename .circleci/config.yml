@@ -5,8 +5,7 @@ _defaults: &defaults
   #   - image: docker:17.05.0-ce
   machine:
     enabled: true
-    # Use Ubuntu 14.04 with bleeding edge Docker daemon 17.06.0-ce.
-    image: circleci/classic:edge
+    image: ubuntu-2004:202201-02
   working_directory: ~/scbd/aa-portal
   parallelism: 1
 
