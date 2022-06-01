@@ -3,7 +3,6 @@
     <div class="container ">
       <div  class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
-
           <!-- <a href="https://www.cbd.int/action-agenda/newsletter.shtml">
             <img class="img-fluid" src="https://attachments.cbd.int/s1.png"/>
           </a> -->
@@ -15,9 +14,11 @@
         <div class="col-lg-2 p-lg-0  px-lg-3 z-10">
           <Counts :pledges="pledges" :partnerships="partnerships"/>
         </div>
-        <div class="col-lg-5 p-lg-0 z-10">
-          <a href="https://www.cbd.int/article/uebt-announcement-action-agenda-2021">
-            <img class="img-fluid"  src="~/assets/rs1-small.png"/>
+        <div class="col-lg-5 p-lg-0 z-10 img-size">
+          <div class="headline">{{$t('Latest News: Collaborative Initiative')}}</div>
+         
+         <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022"> 
+            <img class="img-fluid" src="~/assets/cbd-aa-wcmc-logo-1.png"/>
           </a>
         </div>
       </div>
@@ -101,6 +102,24 @@ async function getNumberOfPartnerships(){
 .z-10{
   z-index: 10;
 }
+
+.headline {
+  color: rgb(255, 255, 255);
+  background-color:rgba(4, 148, 43, 0.906);
+
+  text-align:center;
+  font-family:Verdana, Arial Black, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  
+  margin-bottom: 2px;
+}
+
+img {
+  width: 100%;
+  max-height: 35vh;
+}
+
 .particles-cont {
   position: absolute;
   top: 0;
