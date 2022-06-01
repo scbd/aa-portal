@@ -110,14 +110,14 @@ async function getNumberOfPartnerships(){
   text-align:center;
   font-family:Verdana, Arial Black, sans-serif;
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 900;
   
   margin-bottom: 2px;
 }
 
 img {
   width: 100%;
-  height: 220px;
+  max-height: 35vh;
 }
 
 .particles-cont {
