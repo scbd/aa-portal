@@ -1,135 +1,177 @@
 <template>
   <div class="position-relative">
     <div class="container ">
-      <div  class="row pt-5">
+      <div class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
           <!-- <a href="https://www.cbd.int/action-agenda/newsletter.shtml">
             <img class="img-fluid" src="https://attachments.cbd.int/s1.png"/>
           </a> -->
-          <video width="100%"  controls>
+          <a href="https://www.cbd.int/new/">
+            <div class="news-box">{{$t('News and Stories \u2794')}}</div>
+          </a>
+          <video width="100%" controls>
             <source src=" https://www.cbd.int/action-agenda/action%20agenda%20video.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+            Your browser does not support the video tag.
           </video>
+          <!-- <div class="news-box">
+            <a href="https://www.cbd.int/new/">{{$t('News and Stories')}}
+            </a>
+          </div> -->
+
         </div>
+
         <div class="col-lg-2 p-lg-0  px-lg-3 z-10">
-          <Counts :pledges="pledges" :partnerships="partnerships"/>
+          <Counts :pledges="pledges" :partnerships="partnerships" />
         </div>
         <div class="col-lg-5 p-lg-0 z-10 img-size">
           <div class="headline">{{$t('Latest News: Collaborative Initiative')}}</div>
-         
-         <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022"> 
-            <img class="img-fluid" src="~/assets/cbd-aa-wcmc-logo-1.png"/>
+
+          <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022">
+            <img class="img-fluid" src="~/assets/cbd-aa-wcmc-logo-1.png" />
           </a>
         </div>
       </div>
-      
+
       <div class="row ">
         <div class="col-12 px-0 z-10 mb-5">
-          <AACats/>
+          <AACats />
         </div>
       </div>
     </div>
 
-      <ClientOnly v-if="true">
-        <div  v-if="loaded" class="particles-cont">
-          <VueParticles class="particles"
-            color="#000000"
-            :particleOpacity="0.7"
-            linesColor="#000000"
-            :particlesNumber="80"
-            shapeType="circle"
-            :particleSize="5"
-            :linesWidth="2"
-            :lineLinked="true"
-            :lineOpacity="0.4"
-            :linesDistance="150"
-            :moveSpeed="3"
-            :hoverEffect="true"
-            hoverMode="grab"
-            :clickEffect="true"
-            clickMode="push">
-          </VueParticles>
-        </div>
-      </ClientOnly>
+    <ClientOnly v-if="true">
+      <div v-if="loaded" class="particles-cont">
+        <VueParticles class="particles" color="#000000" :particleOpacity="0.7" linesColor="#000000"
+          :particlesNumber="80" shapeType="circle" :particleSize="5" :linesWidth="2" :lineLinked="true"
+          :lineOpacity="0.4" :linesDistance="150" :moveSpeed="3" :hoverEffect="true" hoverMode="grab"
+          :clickEffect="true" clickMode="push">
+        </VueParticles>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
 <script>
+  import VueParticles from 'vue-particles/src/vue-particles/vue-particles.vue'
+  import Counts from '~/components/widgets/action-agenda/counts/index.vue'
+  import AACats from '~/components/widgets/action-agenda/aa-cats/index.vue'
 
-import VueParticles from 'vue-particles/src/vue-particles/vue-particles.vue'
-import Counts from '~/components/widgets/action-agenda/counts/index.vue'
-import AACats from '~/components/widgets/action-agenda/aa-cats/index.vue'
+  export default {
+    name: 'PoratalAppIndex',
+    components: {
+      Counts,
+      AACats,
+      VueParticles
+    },
 
-export default {
-  name      : 'PoratalAppIndex',
-  components: { Counts, AACats, VueParticles },
-
-  methods: { getNumberOfPledges, getNumberOfPartnerships },
-  created,
-  mounted(){
-    setTimeout(() => this.loaded = true, 3000)
-  },
-  asyncData
-}
-
-function asyncData(ctx){
-  return {
-    pledges     : 0,
-    partnerships: 0,
-    loaded      : false
+    methods: {
+      getNumberOfPledges,
+      getNumberOfPartnerships
+    },
+    created,
+    mounted() {
+      setTimeout(() => this.loaded = true, 3000)
+    },
+    asyncData
   }
-}
-async function created(){
-  this.pledges = await this.getNumberOfPledges()
-  this.partnerships = await this.getNumberOfPartnerships()
-}
-async function getNumberOfPledges(){
-  const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { c: 1 } })).data
 
-  return count
-}
-async function getNumberOfPartnerships(){
-  const q         = { 'partners.0.name.en': { $exists: 1 } }
-  const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { q, c: 1  } })).data
+  function asyncData(ctx) {
+    return {
+      pledges: 0,
+      partnerships: 0,
+      loaded: false
+    }
+  }
+  async function created() {
+    this.pledges = await this.getNumberOfPledges()
+    this.partnerships = await this.getNumberOfPartnerships()
+  }
+  async function getNumberOfPledges() {
+    const {
+      count
+    } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', {
+      params: {
+        c: 1
+      }
+    })).data
 
-  return count
-}
+    return count
+  }
+  async function getNumberOfPartnerships() {
+    const q = {
+      'partners.0.name.en': {
+        $exists: 1
+      }
+    }
+    const {
+      count
+    } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', {
+      params: {
+        q,
+        c: 1
+      }
+    })).data
+
+    return count
+  }
 </script>
 
 
 <style scoped>
+  .z-10 {
+    z-index: 10;
+  }
 
-.z-10{
-  z-index: 10;
-}
+  .news-box {
+    color: rgb(233, 242, 233);
+    font-weight: 900;
+    text-align: center;
+    background-color: rgba(130, 134, 129, 0.816);
+    font-size: 2.8vh;
+    font-family: Comic sans MS;
+    border-top: 2px solid #262626;
+    border-bottom: 2px solid #262626;
+    letter-spacing: 1px;
+    transition: 0.5s;
 
-.headline {
-  color: rgb(255, 255, 255);
-  background-color:rgba(4, 148, 43, 0.906);
+    text-shadow: 1px 1px rgba(70, 71, 68, 0.816);
 
-  text-align:center;
-  font-family:Verdana, Arial Black, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 900;
-  
-  margin-bottom: 2px;
-}
+    margin-bottom:8px;
+  }
 
-img {
-  width: 100%;
-  max-height: 35vh;
-}
+  .news-box:hover {
+    letter-spacing: 4px;
+    font-weight: 900;
+    text-shadow: 2px 2px rgb(59, 60, 59);
+  }
 
-.particles-cont {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
+  .headline {
+    color: rgb(255, 255, 255);
+    background-color: rgba(4, 148, 43, 0.906);
 
-.particles {
-  width: 100vw;
-  height: 100%;
-  z-index: 1;
-}
+    text-align: center;
+    font-family: Verdana, Arial Black, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+
+    margin-bottom: 2px;
+  }
+
+  img {
+    width: 100%;
+    max-height: 35vh;
+  }
+
+  .particles-cont {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .particles {
+    width: 100vw;
+    height: 100%;
+    z-index: 1;
+  }
 </style>
