@@ -1,16 +1,20 @@
 <template>
   <div class="block block-cbd-utility block-filters-block my-4 py-2">
-    <UpdatesWidgetHeader/>
+    <UpdatesWidgetHeader />
 
     <div class="view-filtered-items">
       <div class="container-fluid">
         <transition-group name="flip-list" tag="div" class="row">
-          <div v-for="({ image, url, identifier, name },index) in cats" v-bind:key="identifier" :class="{'col-md-3': index < 8, 'col-md-4': index >= 8 }" class="cont  p-0">
+          <div v-for="({ image, url, identifier,name, count },index) in cats" v-bind:key="identifier"
+            :class="{'col-md-3': index < 8, 'col-md-4': index >= 8 }" class="cont  p-0">
             <a :href="url">
-              <img class="img-fluid" :src="image[0]"/>
-                <div class="overlay">
-                  <h3 class="absolute-center" style="color: white; height: 100%;">{{name}}</h3>
+              <img class="img-fluid" :src="image[0]" />
+              <div class="overlay">
+                <h3 class="absolute-top" style="color: white; height: 50%;">{{name}}</h3>
+                <div class="badge">
+                  <h3 class="absolute-center" style="color: white; height: 60%;">{{count}}</h3>
                 </div>
+              </div>
             </a>
           </div>
         </transition-group>
@@ -19,81 +23,168 @@
   </div>
 </template>
 <script>
-import {  getData  } from '@action-agenda/cached-apis'
+  import {
+    getData
+  } from '@action-agenda/cached-apis'
 
-import UpdatesWidgetHeader from './header'
+  import UpdatesWidgetHeader from './header'
+  import axios from 'axios'
 
-export default {
-  name      : 'AACatsWidget',
-  components: { UpdatesWidgetHeader },
-  mounted, data
-}
-
-function data(){
-  return {
-    cats: []
+  export default {
+    name: 'AACatsWidget',
+    components: {
+      UpdatesWidgetHeader
+    },
+    methods: {
+      getCategoryCount
+    },
+    mounted,
+    data
   }
-}
 
-async function mounted(){
-  this.cats = (await  getData('actionCategories'))
-    .map((cat) => {
-      cat.image = [ `https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image ]
-      return cat
-    })
-    .sort(() => 0.5 - Math.random())
+  function data() {
+    return {
+      cats: []
+    }
+  }
 
-  setTimeout(() => {
-    this.cats = this.cats.sort(compare);
-  }, 1000)
-}
+  async function mounted() {
 
-function compare(a, b){
-  if (a.identifier < b.identifier)
-    return -1;
-  if (a.identifier > b.identifier)
-    return 1;
-  
-  return 0;
-}
+    this.cats = (await getData('actionCategories'))
+      .map((cat) => {
+        cat.image = [`https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image]
+        return cat
+      })
+      .sort(() => 0.5 - Math.random())
 
+    setTimeout(() => {
+      this.cats = this.cats.sort(compare);
+    }, 1000)
+
+    for (const cat of this.cats) {
+      cat.count = await getCategoryCount(cat.identifier)
+    }
+
+    // this.cats = this.cats.map(async (cat) =>{
+    //    cat.number = await getCategoryCount(cat.identifier)
+    //    return cat
+    // })
+
+    console.log("Cats Length: " + this.cats.length)
+  }
+
+  function compare(a, b) {
+    if (a.identifier < b.identifier)
+      return -1;
+    if (a.identifier > b.identifier)
+      return 1;
+
+    return 0;
+  }
+
+  async function getCategoryCount(cat) {
+
+    const q = {
+      'actionDetails.actionCategories': {
+        "identifier": cat
+      }
+    }
+    const {
+      count
+    } = (await axios.get('https://api.cbd.int/api/v2019/actions', {
+      params: {
+        q,
+        c: 1
+      }
+    })).data
+
+    console.log(cat + ":: " + count)
+
+    if (count === 'undefined') {
+      console.log("It is undefined -->" + count)
+      return 1
+    }
+
+    return count
+  }
 </script>
 <style scoped>
-  img{ width:100%;  }
-  .flip-list-move { transition: transform 1s; }
+  img {
+    width: 100%;
+  }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  opacity: 0;
-  transition: .5s ease;
-  background-color: #000;
-}
+  .flip-list-move {
+    transition: transform 1s;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #000;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .badge {
+    height: 100px;
+    width: 100px;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    /* may require vendor prefixes */
+    background: rgb(88, 88, 88);
+  }
+
+  .absolute-top {
+    /* display: flex; */
+    /* align-items:center; */
+    justify-content: center;
+    text-align: center;
+  }
 
   .absolute-center {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
-.cont:hover .overlay {
-  opacity: .9;
-}
+
+  .cont:hover .overlay {
+    opacity: .9;
+  }
+
   @media (min-width: 768px) {
-    img{ max-height: 120px; }
+    img {
+      max-height: 120px;
+    }
   }
+
   @media (min-width: 992px) {
-    img{ max-height: 155px; }
+    img {
+      max-height: 155px;
+    }
   }
+
   @media (min-width: 1200px) {
-    img{ max-height:155px; }
+    img {
+      max-height: 155px;
+    }
   }
+
   @media (min-width: 1600px) {
-    img{ max-height:230px; }
+    img {
+      max-height: 230px;
+    }
   }
 </style>
