@@ -64,7 +64,7 @@ export default {
   name      : 'PoratalAppIndex',
   components: { Counts, AACats, VueParticles },
 
-  methods: { getNumberOfPledges, getNumberOfPartnerships },
+  methods: { getNumberOfPledges, getNumberOfPartnerships,getActionCategory},
   created,
   mounted(){
     setTimeout(() => this.loaded = true, 3000)
@@ -82,6 +82,7 @@ function asyncData(ctx){
 async function created(){
   this.pledges = await this.getNumberOfPledges()
   this.partnerships = await this.getNumberOfPartnerships()
+  await this.getActionCategory()
 }
 async function getNumberOfPledges(){
   const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { c: 1 } })).data
@@ -93,6 +94,17 @@ async function getNumberOfPartnerships(){
   const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { q, c: 1  } })).data
 
   return count
+}
+
+async function getActionCategory(){
+  // const q   = {'partners.0.name.en' : {$exists:1}}
+  // const q = {'actionDetails.actionCategories':{"identifier":"CLIMATE-MITIGATION-AND-ADAPTATION"}}
+  const q = {'actionDetails.actionCategories':{"identifier":"BIOSAFETY"}}
+
+//  t = {"actionDetails.actionCategories":{"identifier":"CLIMATE-MITIGATION-AND-ADAPTATION"}}
+ 
+ const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { q, c: 1  } })).data
+  console.log("Test: "+count)
 }
 </script>
 
