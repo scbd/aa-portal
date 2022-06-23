@@ -11,8 +11,8 @@
               <div class="overlay">
                 <h3 class="absolute-center" style="color: white; height: 50%;">{{ name }}</h3>
                 <div class="background-circle" style="color: white;">
-                  {{ count }}
-                  <!-- <h3 class="absolute-center" style="color: white; height: 60%;">{{count}}</h3> -->
+                  {{ count.count }}
+                  <!-- Testing count.count -->
                 </div>
               </div>
             </a>
@@ -25,56 +25,46 @@
 <script>
 import { getData } from "@action-agenda/cached-apis";
 import UpdatesWidgetHeader from "./header";
-import axios from "axios";
 
 export default {
   name: "AACatsWidget",
   components: { UpdatesWidgetHeader },
-  methods: { getCategoryCount },
+  methods: { getCategoryCount, getCategoryCount2 }, //added second method
   created,
-  mounted,
   data,
 };
 
 function data() {
   return {
     cats: [],
+    categoryCount: [],
+    testCount: [], //test
   };
 }
 
 async function created() {
-  this.cats = (await getData("actionCategories"))
-    .map((cat) => {
-      cat.image = [`https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image];
-      return cat;
-    })
-    .sort(() => 0.5 - Math.random());
+  this.cats = await this.getCategoryCount();
+}
+
+async function getCategoryCount() {
+  const catNumber = Promise.all(
+    (await getData("actionCategories"))
+      .map(async (cat) => {
+        cat.image = [`https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image];
+
+        const q = { "actionDetails.actionCategories": { identifier: cat.identifier } };
+        cat.count = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
+
+        return cat;
+      })
+      .sort(() => 0.5 - Math.random())
+  );
 
   setTimeout(() => {
     this.cats = this.cats.sort(compare);
   }, 1000);
 
-  // this.cats.map(async (cat) => {
-  //   cat.count = await getCategoryCount(cat.identifier)
-  //   return cat
-  // })
-
-  /* TEMPORARY SOLUTION: */
-  for (const cat of this.cats) {
-    cat.count = await getCategoryCount(cat.identifier);
-  }
-}
-
-async function mounted() {
-  // this.cats = (await getData('actionCategories'))
-  //   this.cats.map((cat) => {
-  //     cat.image = [`https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image]
-  //     return cat
-  //   })
-  //   .sort(() => 0.5 - Math.random())
-  // setTimeout(() => {
-  //   this.cats = this.cats.sort(compare);
-  // }, 1000)
+  return catNumber;
 }
 
 function compare(a, b) {
@@ -84,16 +74,35 @@ function compare(a, b) {
   return 0;
 }
 
-async function getCategoryCount(cat) {
+/* Other Solution*/
+async function created2() {
+  this.cats = (await getData("actionCategories"))
+    .map((cat) => {
+      cat.image = [`https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image];
+      return cat;
+    })
+    .sort(() => 0.5 - Math.random());
+
+  /* TEMPORARY SOLUTION */
+  for (const cat of this.cats) {
+    const count = await this.getCategoryCount(cat.identifier);
+    this.categoryCount.push(count);
+  }
+
+  this.cats.forEach((cat, index) => {
+    cat.count = this.categoryCount[index];
+  });
+
+  setTimeout(() => {
+    this.cats = this.cats.sort(compare);
+  }, 1000);
+}
+
+async function getCategoryCount2(cat) {
   const q = { "actionDetails.actionCategories": { identifier: cat } };
-  const { count } = (await axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
+  const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
 
   console.log(cat + ":: " + count);
-
-  if (count === "undefined") {
-    console.log("It is undefined -->" + count);
-    return 1;
-  }
 
   return count;
 }
