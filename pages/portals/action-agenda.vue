@@ -1,129 +1,118 @@
 <template>
   <div class="position-relative">
     <div class="container ">
-      <div  class="row pt-5">
+      <div class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
           <!-- <a href="https://www.cbd.int/action-agenda/newsletter.shtml">
             <img class="img-fluid" src="https://attachments.cbd.int/s1.png"/>
           </a> -->
-          <video width="100%"  controls>
-            <source src=" https://www.cbd.int/action-agenda/action%20agenda%20video.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          <video width="100%" controls>
+            <source src=" https://www.cbd.int/action-agenda/action%20agenda%20video.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
           </video>
         </div>
         <div class="col-lg-2 p-lg-0  px-lg-3 z-10">
-          <Counts :pledges="pledges" :partnerships="partnerships"/>
+          <Counts :pledges="pledges" :partnerships="partnerships" />
         </div>
         <div class="col-lg-5 p-lg-0 z-10 img-size">
-          <div class="headline">{{$t('Latest News: Collaborative Initiative')}}</div>
-         
-         <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022"> 
-            <img class="img-fluid" src="~/assets/cbd-aa-wcmc-logo-1.png"/>
+          <div class="headline">{{ $t("Latest News: Collaborative Initiative") }}</div>
+
+          <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022">
+            <img class="img-fluid" src="~/assets/cbd-aa-wcmc-logo-1.png" />
           </a>
         </div>
       </div>
-      
+
       <div class="row ">
         <div class="col-12 px-0 z-10 mb-5">
-          <AACats/>
+          <AACats />
         </div>
       </div>
     </div>
 
-      <ClientOnly v-if="true">
-        <div  v-if="loaded" class="particles-cont">
-          <VueParticles class="particles"
-            color="#000000"
-            :particleOpacity="0.7"
-            linesColor="#000000"
-            :particlesNumber="80"
-            shapeType="circle"
-            :particleSize="5"
-            :linesWidth="2"
-            :lineLinked="true"
-            :lineOpacity="0.4"
-            :linesDistance="150"
-            :moveSpeed="3"
-            :hoverEffect="true"
-            hoverMode="grab"
-            :clickEffect="true"
-            clickMode="push">
-          </VueParticles>
-        </div>
-      </ClientOnly>
+    <ClientOnly v-if="true">
+      <div v-if="loaded" class="particles-cont">
+        <VueParticles class="particles" color="#000000" :particleOpacity="0.7" linesColor="#000000" :particlesNumber="80" shapeType="circle" :particleSize="5" :linesWidth="2" :lineLinked="true" :lineOpacity="0.4" :linesDistance="150" :moveSpeed="3" :hoverEffect="true" hoverMode="grab" :clickEffect="true" clickMode="push"> </VueParticles>
+      </div>
+    </ClientOnly>
   </div>
 </template>
 
 <script>
+import VueParticles from "vue-particles/src/vue-particles/vue-particles.vue";
+import Counts from "~/components/widgets/action-agenda/counts/index.vue";
+import AACats from "~/components/widgets/action-agenda/aa-cats/index.vue";
 
-import VueParticles from 'vue-particles/src/vue-particles/vue-particles.vue'
-import Counts from '~/components/widgets/action-agenda/counts/index.vue'
-import AACats from '~/components/widgets/action-agenda/aa-cats/index.vue'
+//Testing:
+import { getData } from "@action-agenda/cached-apis";
 
 export default {
-  name      : 'PoratalAppIndex',
+  name: "PoratalAppIndex",
   components: { Counts, AACats, VueParticles },
 
-  methods: { getNumberOfPledges, getNumberOfPartnerships,getActionCategory},
+  methods: { getNumberOfPledges, getNumberOfPartnerships, getActionCategory },
   created,
-  mounted(){
-    setTimeout(() => this.loaded = true, 3000)
+  mounted() {
+    setTimeout(() => (this.loaded = true), 3000);
   },
-  asyncData
-}
+  asyncData,
+};
 
-function asyncData(ctx){
+function asyncData(ctx) {
   return {
-    pledges     : 0,
+    pledges: 0,
     partnerships: 0,
-    loaded      : false
-  }
+    loaded: false,
+    catCount: [],
+  };
 }
-async function created(){
-  this.pledges = await this.getNumberOfPledges()
-  this.partnerships = await this.getNumberOfPartnerships()
-  await this.getActionCategory()
+async function created() {
+  this.pledges = await this.getNumberOfPledges();
+  this.partnerships = await this.getNumberOfPartnerships();
+  this.catCount = await this.getActionCategory();
 }
-async function getNumberOfPledges(){
-  const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { c: 1 } })).data
+async function getNumberOfPledges() {
+  const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { c: 1 } })).data;
 
-  return count
+  return count;
 }
-async function getNumberOfPartnerships(){
-  const q         = { 'partners.0.name.en': { $exists: 1 } }
-  const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { q, c: 1  } })).data
+async function getNumberOfPartnerships() {
+  const q = { "partners.0.name.en": { $exists: 1 } };
+  const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
 
-  return count
+  return count;
 }
 
-async function getActionCategory(){
-  // const q   = {'partners.0.name.en' : {$exists:1}}
-  // const q = {'actionDetails.actionCategories':{"identifier":"CLIMATE-MITIGATION-AND-ADAPTATION"}}
-  const q = {'actionDetails.actionCategories':{"identifier":"BIOSAFETY"}}
+/* Test Promise.all */
+async function getActionCategory() {
+  const catNumber = Promise.all(
+    (await getData("actionCategories")).map(async (cat) => {
+      const q = { "actionDetails.actionCategories": { identifier: cat.identifier } };
+      const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
+      return count;
+    })
+  );
 
-//  t = {"actionDetails.actionCategories":{"identifier":"CLIMATE-MITIGATION-AND-ADAPTATION"}}
- 
- const { count } = (await this.$axios.get('https://api.cbd.int/api/v2019/actions', { params: { q, c: 1  } })).data
-  console.log("Test: "+count)
+  // console.log("Promise Test: ", catNumber);
+
+  return catNumber;
 }
 </script>
 
-
 <style scoped>
-
-.z-10{
+.z-10 {
   z-index: 10;
 }
 
 .headline {
   color: rgb(255, 255, 255);
-  background-color:rgba(4, 148, 43, 0.906);
+  background-color: rgba(4, 148, 43, 0.906);
 
-  text-align:center;
-  font-family:Verdana, Arial Black, sans-serif;
+  text-align: center;
+  font-family: Verdana, Arial Black, sans-serif;
   font-size: 1.1rem;
   font-weight: 900;
-  
+
   margin-bottom: 2px;
 }
 
