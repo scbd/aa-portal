@@ -77,30 +77,13 @@ async function created() {
   this.partnerships = await this.getNumberOfPartnerships();
 }
 async function getNumberOfPledges() {
-  const { count } = (
-    await this.$axios.get("https://api.cbd.int/api/v2019/actions", {
-      params: {
-        c: 1,
-      },
-    })
-  ).data;
+  const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { c: 1 } })).data;
 
   return count;
 }
 async function getNumberOfPartnerships() {
-  const q = {
-    "partners.0.name.en": {
-      $exists: 1,
-    },
-  };
-  const { count } = (
-    await this.$axios.get("https://api.cbd.int/api/v2019/actions", {
-      params: {
-        q,
-        c: 1,
-      },
-    })
-  ).data;
+  const q = { "partners.0.name.en": { $exists: 1 } };
+  const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
 
   return count;
 }
