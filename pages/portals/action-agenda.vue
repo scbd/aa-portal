@@ -48,11 +48,7 @@ import AACats from "~/components/widgets/action-agenda/aa-cats/index.vue";
 
 export default {
   name: "PoratalAppIndex",
-  components: {
-    Counts,
-    AACats,
-    VueParticles,
-  },
+  components: { Counts, AACats, VueParticles },
 
   methods: {
     getNumberOfPledges,
