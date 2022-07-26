@@ -12,11 +12,17 @@
           <Counts :pledges="pledges" :partnerships="partnerships" />
         </div>
         <div class="col-lg-5 p-lg-0 z-10 img-size">
-          <div class="headline">{{ $t("Latest News: Collaborative Initiative") }}</div>
-
-          <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022">
-            <img class="img-fluid" src="~/assets/cbd-aa-wcmc-logo-1.png" />
-          </a>
+          <img class="img-fluid" src="~/assets/wg2020-background-1.jpg" />
+          <div class="caption">
+            <a href="https://www.cbd.int/action-agenda/infosession.shtml">
+              <h4 class="text-box-1">
+                {{ $t("WG2020-4 Information Session") }}
+              </h4>
+              <h4 class="text-box-2">
+                {{ $t("on the Sharm El-Sheikh to Kunming Action Agenda for Nature and People") }}
+              </h4>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -44,7 +50,10 @@ export default {
   name: "PoratalAppIndex",
   components: { Counts, AACats, VueParticles },
 
-  methods: { getNumberOfPledges, getNumberOfPartnerships },
+  methods: {
+    getNumberOfPledges,
+    getNumberOfPartnerships,
+  },
   created,
   mounted() {
     setTimeout(() => (this.loaded = true), 3000);
@@ -77,25 +86,56 @@ async function getNumberOfPartnerships() {
 </script>
 
 <style scoped>
+img {
+  display: block;
+  filter: brightness(70%);
+  width: 100%;
+  max-height: 38vh;
+}
+
+.caption {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+}
+
+.text-box-1 {
+  text-align: center;
+  color: white;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 5vh;
+  text-decoration: underline;
+  text-shadow: 1px 1px rgb(30, 29, 29);
+
+  padding-bottom: 10px;
+}
+
+.text-box-2 {
+  text-align: center;
+  color: white;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 4.5vh;
+  text-shadow: 0.5px 0.5px rgb(30, 29, 29);
+}
+
+.text-box-1:hover {
+  font-size: 5.5vh;
+  font-weight: 1000;
+  text-shadow: 1.5px 1.5px rgb(30, 29, 29);
+}
+
+.text-box-2:hover {
+  font-size: 4.55vh;
+  font-weight: 1000;
+  text-shadow: 1px 1px rgb(30, 29, 29);
+}
+
 .z-10 {
   z-index: 10;
-}
-
-.headline {
-  color: rgb(255, 255, 255);
-  background-color: rgba(4, 148, 43, 0.906);
-
-  text-align: center;
-  font-family: Verdana, Arial Black, sans-serif;
-  font-size: 1.1rem;
-  font-weight: 900;
-
-  margin-bottom: 2px;
-}
-
-img {
-  width: 100%;
-  max-height: 35vh;
 }
 
 .particles-cont {

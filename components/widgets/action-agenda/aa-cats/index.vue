@@ -12,7 +12,6 @@
                 <h3 class="absolute-center" style="color: white; height: 50%;">{{ name }}</h3>
                 <div class="background-circle" style="color: white;">
                   {{ count.count }}
-                  <!-- Testing count.count -->
                 </div>
               </div>
             </a>
@@ -37,7 +36,6 @@ export default {
 function data() {
   return {
     cats: [],
-    // categoryCount: [],
   };
 }
 
@@ -78,7 +76,6 @@ function compare(a, b) {
 img {
   width: 100%;
 }
-
 .flip-list-move {
   transition: transform 1s;
 }
@@ -132,19 +129,16 @@ img {
     max-height: 120px;
   }
 }
-
 @media (min-width: 992px) {
   img {
     max-height: 155px;
   }
 }
-
 @media (min-width: 1200px) {
   img {
     max-height: 155px;
   }
 }
-
 @media (min-width: 1600px) {
   img {
     max-height: 230px;
