@@ -29,7 +29,7 @@ import UpdatesWidgetHeader from "./header";
 export default {
   name: "AACatsWidget",
   components: { UpdatesWidgetHeader },
-  methods: { getCategoryCount, getCategoryCount2 }, //added second method
+  methods: { getCategoryCount },
   created,
   data,
 };
@@ -37,8 +37,7 @@ export default {
 function data() {
   return {
     cats: [],
-    categoryCount: [],
-    testCount: [], //test
+    // categoryCount: [],
   };
 }
 
@@ -73,40 +72,8 @@ function compare(a, b) {
 
   return 0;
 }
-
-/* Other Solution*/
-async function created2() {
-  this.cats = (await getData("actionCategories"))
-    .map((cat) => {
-      cat.image = [`https://attachments.cbd.int/${cat.identifier}.jpg`, cat.image];
-      return cat;
-    })
-    .sort(() => 0.5 - Math.random());
-
-  /* TEMPORARY SOLUTION */
-  for (const cat of this.cats) {
-    const count = await this.getCategoryCount(cat.identifier);
-    this.categoryCount.push(count);
-  }
-
-  this.cats.forEach((cat, index) => {
-    cat.count = this.categoryCount[index];
-  });
-
-  setTimeout(() => {
-    this.cats = this.cats.sort(compare);
-  }, 1000);
-}
-
-async function getCategoryCount2(cat) {
-  const q = { "actionDetails.actionCategories": { identifier: cat } };
-  const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
-
-  console.log(cat + ":: " + count);
-
-  return count;
-}
 </script>
+
 <style scoped>
 img {
   width: 100%;

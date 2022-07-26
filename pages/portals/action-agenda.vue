@@ -3,9 +3,6 @@
     <div class="container ">
       <div class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
-          <!-- <a href="https://www.cbd.int/action-agenda/newsletter.shtml">
-            <img class="img-fluid" src="https://attachments.cbd.int/s1.png"/>
-          </a> -->
           <video width="100%" controls>
             <source src=" https://www.cbd.int/action-agenda/action%20agenda%20video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
@@ -43,14 +40,11 @@ import VueParticles from "vue-particles/src/vue-particles/vue-particles.vue";
 import Counts from "~/components/widgets/action-agenda/counts/index.vue";
 import AACats from "~/components/widgets/action-agenda/aa-cats/index.vue";
 
-//Testing:
-import { getData } from "@action-agenda/cached-apis";
-
 export default {
   name: "PoratalAppIndex",
   components: { Counts, AACats, VueParticles },
 
-  methods: { getNumberOfPledges, getNumberOfPartnerships, getActionCategory },
+  methods: { getNumberOfPledges, getNumberOfPartnerships },
   created,
   mounted() {
     setTimeout(() => (this.loaded = true), 3000);
@@ -63,13 +57,11 @@ function asyncData(ctx) {
     pledges: 0,
     partnerships: 0,
     loaded: false,
-    catCount: [],
   };
 }
 async function created() {
   this.pledges = await this.getNumberOfPledges();
   this.partnerships = await this.getNumberOfPartnerships();
-  this.catCount = await this.getActionCategory();
 }
 async function getNumberOfPledges() {
   const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { c: 1 } })).data;
@@ -81,21 +73,6 @@ async function getNumberOfPartnerships() {
   const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
 
   return count;
-}
-
-/* Test Promise.all */
-async function getActionCategory() {
-  const catNumber = Promise.all(
-    (await getData("actionCategories")).map(async (cat) => {
-      const q = { "actionDetails.actionCategories": { identifier: cat.identifier } };
-      const { count } = (await this.$axios.get("https://api.cbd.int/api/v2019/actions", { params: { q, c: 1 } })).data;
-      return count;
-    })
-  );
-
-  // console.log("Promise Test: ", catNumber);
-
-  return catNumber;
 }
 </script>
 
