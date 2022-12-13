@@ -4,7 +4,7 @@
       <div class="row pt-5">
         <div class="col-lg-5 p-lg-0 z-10">
           <video width="100%" controls>
-            <source src=" https://www.cbd.int/action-agenda/action%20agenda%20video.mp4" type="video/mp4" />
+            <source src="https://attachments.cbd.int/action-agenda/tell-what-happened.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
