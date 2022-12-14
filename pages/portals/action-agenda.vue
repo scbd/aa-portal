@@ -12,14 +12,18 @@
           <Counts :pledges="pledges" :partnerships="partnerships" />
         </div>
         <div class="col-lg-5 p-lg-0 z-10 img-size">
-          <img class="img-fluid" src="~/assets/iucn-nl-webstory.jpg" />
+          <img class="img-fluid" src="~/assets/wcmc-background.jpg" />
           <div class="caption">
-            <a href="https://www.cbd.int/article/iucn-dutch-action-agenda-28September2022">
+            <a href="https://www.cbd.int/article/launch-Nature-Commitments-Platform-25May2022">
               <h4 class="text-box-1">
-                {{ $t("IUCN NL’S DUTCH ACTION AGENDA FOR BIODIVERSITY SUPPORTS THE ACTION AGENDA FOR NATURE AND PEOPLE IN PREVENTING BIODIVERSITY LOSS") }}
+                {{ $t("NEW ONLINE PLATFORM SHOWCASES CIVIL SOCIETY, LOCAL AUTHORITY, AND BUSINESS PLEDGE FOR NATURE") }}
+                <br>
+                <br>
+                {{ $t("UNEP - WCMC") }}
+
               </h4>
               <!-- <h4 class="text-box-2">
-                {{ $t("IUCN NL's Dutch Action Agenda aligns with the Sharm El Sheikh to Kunming Action Agenda for Nature and People (Action Agenda) to contribute to the worldwide biodiversity targets ") }}
+                {{ $t("UNEP - WCMC") }}
               </h4> -->
             </a>
           </div>
@@ -102,11 +106,11 @@ img {
 }
 
 .text-box-1 {
-  text-align: justify;
+  text-align: center;
   color: white;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 3.5vh;
+  font-size: 4.0vh;
   text-decoration: underline;
   text-shadow: 1px 1px rgb(30, 29, 29);
 
@@ -118,18 +122,18 @@ img {
   color: white;
   font-weight: 500;
   text-transform: uppercase;
-  font-size: 2.5vh;
+  font-size: 3.5vh;
   text-shadow: 0.5px 0.5px rgb(30, 29, 29);
 }
 
 .text-box-1:hover {
-  font-size: 3.9vh;
+  font-size: 4.4vh;
   font-weight: 1000;
   text-shadow: 1.5px 1.5px rgb(30, 29, 29);
 }
 
 .text-box-2:hover {
-  font-size: 2.8vh;
+  font-size: 3.8vh;
   font-weight: 1000;
   text-shadow: 1px 1px rgb(30, 29, 29);
 }
