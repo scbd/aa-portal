@@ -35,7 +35,10 @@ export default {
     '@scbd/nuxt-scbd-sso-module',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
-    [ 'nuxt-i18n', i18n ]
+    [ 'nuxt-i18n', i18n ],
+    ['@nuxtjs/google-analytics', {
+      id: 'UA-1996573-1'
+    }]
   ],
 
   build: {                                                      // Build Configuration: https://go.nuxtjs.dev/config-build
