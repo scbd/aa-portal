@@ -37,7 +37,7 @@ export default {
     '@nuxtjs/pwa',
     [ 'nuxt-i18n', i18n ],
     ['@nuxtjs/google-analytics', {
-      id: 'UA-1996573-1'
+      id: 'UA-1996573-20'
     }]
   ],
 
