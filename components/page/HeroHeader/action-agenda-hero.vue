@@ -8,7 +8,7 @@
             <div>
 
 
-              {{ $t("With the adoption of the Kunming-Montreal Global Biodiversity Framework, it’s in everyone’s best interest to take action and put biodiversity on a path to recovery by 2030!") }}
+              {{ $t("Reversing biodiversity loss requires action from all segments of society! With the adoption of the Kunming-Montreal Global Biodiversity Framework, it’s in everyone’s best interest to take action and put biodiversity on a path to recovery by 2030! Take leadership and inspire others to safeguard, restore and invest in biodiversity.") }}
             </div>
             <div>
               <a href="https://www.cbd.int/action-agenda/contribute" class="summit-button mt-4 button js-form-submit form-submit btn btn-primary form-control but-size pt-2">
