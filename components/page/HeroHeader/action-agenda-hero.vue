@@ -23,7 +23,7 @@
       </div>
       <div class="col-md-6" style="background-color: #134059;">
         <a href="https://www.cbd.int/action-agenda/contributions">
-          <img class="img-fluid" src="~/assets/map.png" />
+          <img class="img-fluid" src="~/assets/map.jpg" />
         </a>
       </div>
     </div>
